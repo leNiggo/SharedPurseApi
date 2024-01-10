@@ -8,13 +8,19 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import CreateUserDTO from '../dto/create-user.dto';
 import UserDTO from '../dto/user.dto';
 import UserService from '../service/user.service';
+import { Public } from 'src/modules/auth/decorator/public.route';
 
 @ApiTags('User')
 @Controller('user')
+@ApiInternalServerErrorResponse()
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -36,6 +42,7 @@ export default class UserController {
     return this.userService.getUser(userId);
   }
 
+  @Public()
   @Post()
   public async createUser(@Body() newUser: CreateUserDTO): Promise<string> {
     const createdUser = await this.userService.createUser(newUser);
