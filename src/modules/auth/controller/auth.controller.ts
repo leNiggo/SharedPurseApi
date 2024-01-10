@@ -3,12 +3,14 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import LoginDTO from '../dto/login.dto';
 import AuthService from '../service/auth.service';
 import LoginResponseDTO from '../dto/login-response.dto';
+import { Public } from '../decorator/public.route';
 
 @ApiTags('Login')
 @Controller('login')
 export default class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post()
   @ApiOkResponse({
