@@ -23,9 +23,14 @@ docker compose up -d
 
 ## Database management
 
-´´´bash
+```bash
+# Migrate first before starting the api
+yarn db:mig
 
-´´´
+# You can also reset the whole database
+# tbd
+
+```
 
 ## Running the app
 
