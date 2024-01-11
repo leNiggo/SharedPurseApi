@@ -1,9 +1,10 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -38,4 +39,8 @@ export default class GroupController {
 
     return newGroup.id;
   }
+
+  @Get()
+  @ApiOkResponse()
+  public async getManyGroups(@Req() req: UserRequest) {}
 }

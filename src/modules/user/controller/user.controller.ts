@@ -9,7 +9,9 @@ import {
   Post,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiTags,
@@ -19,11 +21,14 @@ import UserDTO from '../dto/user.dto';
 import UserService from '../service/user.service';
 import { Public } from 'src/modules/auth/decorator/public.route';
 import { JWT_AUTH } from 'src/constants/global';
+import CreateUserResponseDTO from '../dto/create-user-response.dto';
 
 @ApiTags('User')
 @Controller('user')
 @ApiBearerAuth(JWT_AUTH)
 @ApiInternalServerErrorResponse()
+@ApiConflictResponse()
+@ApiBadRequestResponse()
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -47,9 +52,11 @@ export default class UserController {
 
   @Public()
   @Post()
-  public async createUser(@Body() newUser: CreateUserDTO): Promise<string> {
+  public async createUser(
+    @Body() newUser: CreateUserDTO,
+  ): Promise<CreateUserResponseDTO> {
     const createdUser = await this.userService.createUser(newUser);
-    return createdUser.id;
+    return { id: createdUser.id };
   }
 
   @Patch(':userId')

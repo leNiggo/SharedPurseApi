@@ -22,6 +22,17 @@ export default class GroupService {
     });
   }
 
+  public async removeUser(groupId: string, userIds: string[]) {
+    return this.prisma.group.update({
+      where: { id: groupId },
+      data: {
+        invitedUsers: {
+          disconnect: userIds.map((id) => ({ id })),
+        },
+      },
+    });
+  }
+
   public async getGroupsByUser(userId: string) {
     return this.prisma.group.findMany({
       where: { users: { some: { id: userId } } },
