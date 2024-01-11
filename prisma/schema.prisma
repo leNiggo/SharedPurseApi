@@ -27,6 +27,7 @@ model User {
 
   createdPayment    Payment[] @relation("created")
   unacceptedPayment Payment[] @relation("unacceptedPayment")
+  createdGroups     Group[]   @relation("createdByUser")
 }
 
 model Payment {
@@ -49,8 +50,10 @@ model Group {
   id   String @id @unique @default(uuid()) @db.Uuid
   name String
 
-  payments Payment[]
+  createdBy       User   @relation("createdByUser", fields: [createdByUsedId], references: [id])
+  createdByUsedId String @db.Uuid
 
-  invitedUsers User[] @relation("invited")
+  payments     Payment[]
+  invitedUsers User[]    @relation("invited")
   users        User[]
 }

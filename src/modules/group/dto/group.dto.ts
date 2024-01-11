@@ -1,4 +1,9 @@
+import { IsString, IsUUID } from 'class-validator';
+
 export default class GroupDTO {
-    id: string;
-    
+  @IsUUID()
+  id: string;
+
+  @IsString()
+  name: string;
 }

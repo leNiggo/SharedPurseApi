@@ -8,14 +8,19 @@ import { readFileSync } from 'fs';
 const httpsOptions: HttpsOptions = {
   key: process.env.PRIVATE_KEY_PATH
     ? readFileSync(process.env.PRIVATE_KEY_PATH)
-    : undefined,
+    : null,
   cert: process.env.PUBLIC_CERT_PATH
     ? readFileSync(process.env.PUBLIC_CERT_PATH)
-    : undefined,
+    : null,
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions:
+      process.env.PRIVATE_KEY_PATH && process.env.PUBLIC_CERT_PATH
+        ? httpsOptions
+        : undefined,
+  });
 
   createOpenApi(app);
 
