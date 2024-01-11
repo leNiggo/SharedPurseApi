@@ -9,6 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiTags,
@@ -17,9 +18,11 @@ import CreateUserDTO from '../dto/create-user.dto';
 import UserDTO from '../dto/user.dto';
 import UserService from '../service/user.service';
 import { Public } from 'src/modules/auth/decorator/public.route';
+import { JWT_AUTH } from 'src/constants/global';
 
 @ApiTags('User')
 @Controller('user')
+@ApiBearerAuth(JWT_AUTH)
 @ApiInternalServerErrorResponse()
 export default class UserController {
   constructor(private readonly userService: UserService) {}
