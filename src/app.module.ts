@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './modules/auth/constants';
 import AuthModule from './modules/auth/auth.module';
 import GroupModule from './modules/group/group.module';
+import PaymentModule from './modules/payment/payment.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import GroupModule from './modules/group/group.module';
     }),
     AuthModule,
     UserModule,
+    PaymentModule,
     GroupModule,
   ],
   controllers: [],

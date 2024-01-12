@@ -9,11 +9,16 @@ export default class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async getList() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      select: { id: true, name: true, email: true },
+    });
   }
 
   public async getUser(id: string) {
-    return this.prisma.user.findUniqueOrThrow({ where: { id } });
+    return this.prisma.user.findUniqueOrThrow({
+      where: { id },
+      select: { id: true, email: true, name: true },
+    });
   }
 
   public async createUser(user: CreateUserDTO) {

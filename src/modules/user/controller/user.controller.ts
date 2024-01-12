@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -22,6 +23,7 @@ import UserService from '../service/user.service';
 import { Public } from 'src/modules/auth/decorator/public.route';
 import { JWT_AUTH } from 'src/constants/global';
 import CreateUserResponseDTO from '../dto/create-user-response.dto';
+import UserRequest from 'src/modules/auth/dto/user-request.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -38,6 +40,14 @@ export default class UserController {
   })
   public async getList(): Promise<UserDTO[]> {
     return this.userService.getList();
+  }
+
+  @Get('/me')
+  @ApiOperation({
+    description: 'get a me',
+  })
+  public async getMe(@Req() req: UserRequest): Promise<UserDTO> {
+    return this.userService.getUser(req.user.userId);
   }
 
   @Get(':userId')

@@ -1,10 +1,23 @@
+import { Type } from 'class-transformer';
+import { IsCurrency, IsDate, IsString, IsUUID } from 'class-validator';
+
 export default class PaymentDTO {
-    id!: string;
+  @IsUUID()
+  id!: string;
 
-    name!: string;
+  @IsString()
+  name!: string;
 
-    amount!: number;
+  @IsCurrency()
+  amount!: string;
 
-    
+  @IsString()
+  location!: string;
 
+  @IsDate()
+  @Type(() => Date)
+  createdAt!: Date;
+
+  @IsUUID('4', { each: true })
+  unacceptedUser: string[];
 }

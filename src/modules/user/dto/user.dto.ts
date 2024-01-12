@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '@prisma/client';
-import { IsEmail, IsEnum, IsHash, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsEnum, IsString, IsUUID } from 'class-validator';
 
 export default class UserDTO {
   /**
@@ -21,14 +21,6 @@ export default class UserDTO {
    */
   @IsEmail()
   email: string;
-
-  /**
-   * The hashed password
-   * Example password is Test123!
-   * @example 54de7f606f2523cba8efac173fab42fb7f59d56ceff974c8fdb7342cf2cfe345
-   */
-  @IsHash('sha256')
-  password: string;
 
   @ApiProperty({
     enum: UserRole,
