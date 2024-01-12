@@ -6,4 +6,7 @@ export default class GroupDTO {
 
   @IsString()
   name: string;
+
+  @IsString()
+  createdByUserId: string;
 }

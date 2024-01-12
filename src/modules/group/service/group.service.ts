@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+@Injectable()
 export default class GroupService {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -35,7 +37,7 @@ export default class GroupService {
 
   public async getGroupsByUser(userId: string) {
     return this.prisma.group.findMany({
-      where: { users: { some: { id: userId } } },
+      where: { createdByUsedId: userId },
     });
   }
 

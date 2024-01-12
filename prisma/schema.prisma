@@ -28,6 +28,7 @@ model User {
   createdPayment    Payment[] @relation("created")
   unacceptedPayment Payment[] @relation("unacceptedPayment")
   createdGroups     Group[]   @relation("createdByUser")
+  Saldo             Saldo[]
 }
 
 model Payment {
@@ -56,4 +57,17 @@ model Group {
   payments     Payment[]
   invitedUsers User[]    @relation("invited")
   users        User[]
+  Saldo        Saldo[]
+}
+
+model Saldo {
+  id String @id @unique @default(uuid()) @db.Uuid
+
+  saldo Decimal @db.Money
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+
+  group   Group  @relation(fields: [groupId], references: [id])
+  groupId String @db.Uuid
 }
