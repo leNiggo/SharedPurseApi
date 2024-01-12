@@ -37,7 +37,9 @@ export default class GroupService {
 
   public async getGroupsByUser(userId: string) {
     return this.prisma.group.findMany({
-      where: { createdByUsedId: userId },
+      where: {
+        OR: [{ createdByUsedId: userId }, { users: { some: { id: userId } } }],
+      },
     });
   }
 
