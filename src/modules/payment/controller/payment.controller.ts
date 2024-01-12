@@ -52,7 +52,7 @@ export default class PaymentController {
   @Get(':groupId')
   @ApiOkResponse()
   public async getManyPayments(
-    @Param(ParseUUIDPipe) groupId: string,
+    @Param('groupId', ParseUUIDPipe) groupId: string,
   ): Promise<PaymentListDTO> {
     const payments = await this.paymentService.getPaymentByGroup(groupId);
 
