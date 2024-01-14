@@ -1,5 +1,5 @@
 import GroupDTO from './group.dto';
 
-export class GroupListDTO {
+export default class GroupListDTO {
   groups: GroupDTO[];
 }

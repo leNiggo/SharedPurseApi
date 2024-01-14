@@ -21,7 +21,7 @@ import { JWT_AUTH } from 'src/constants/global';
 import GroupService from '../service/group.service';
 import UserRequest from 'src/modules/auth/dto/user-request.dto';
 import CreateGroupDTO from '../dto/create-group.dto';
-import { GroupListDTO } from '../dto/list-group.dto';
+import GroupListDTO from '../dto/list-group.dto';
 import { mapToGroupListDTO } from '../mapper/list-group.mapper';
 import InviteUsersDTO from '../dto/invite-user.dto';
 import GroupContext from '../dto/group.context.dto';
@@ -54,7 +54,12 @@ export default class GroupController {
   }
 
   @Get()
-  @ApiOkResponse()
+  @ApiOkResponse({
+    type: GroupListDTO,
+  })
+  @ApiOperation({
+    description: 'this will get all groups the user is inside',
+  })
   public async getManyGroups(@Req() req: UserRequest): Promise<GroupListDTO> {
     const groups = await this.groupService.getGroupsByUser(req.user.userId);
 
