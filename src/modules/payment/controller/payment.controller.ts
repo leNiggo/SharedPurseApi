@@ -52,8 +52,10 @@ export default class PaymentController {
     };
   }
 
-  @Get(':groupId')
-  @ApiOkResponse()
+  @Get('many/:groupId')
+  @ApiOkResponse({
+    type: PaymentListDTO,
+  })
   public async getManyPayments(
     @Param('groupId', ParseUUIDPipe) groupId: string,
   ): Promise<PaymentListDTO> {
@@ -86,6 +88,15 @@ export default class PaymentController {
       req.user.userId,
       fields,
     );
+  }
+
+  @Patch('/accept/:id')
+  @ApiOkResponse()
+  public async acceptPayment(
+    @Req() req: UserRequest,
+    @Param() context: PaymentContext,
+  ) {
+    await this.paymentService.acceptPayment(req.user.userId, context.id);
   }
 
   @Delete(':id')

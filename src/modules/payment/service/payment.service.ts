@@ -8,10 +8,12 @@ export default class PaymentService {
   constructor(private readonly prisma: PrismaService) {}
 
   public async createPayment(userId: string, fields: CreatePaymentDTO) {
-    const userIdsInGroup = await this.prisma.group.findFirstOrThrow({
+    const group = await this.prisma.group.findFirstOrThrow({
       where: { id: fields.groupId },
-      select: { users: true },
+      select: { users: true, invitedUsers: true },
     });
+
+    const userIds = [...group.users, ...group.invitedUsers];
 
     return this.prisma.payment.create({
       data: {
@@ -21,7 +23,7 @@ export default class PaymentService {
         createdById: userId,
         groupId: fields.groupId,
         unacceptedUsers: {
-          connect: userIdsInGroup.users.map((user) => ({ id: user.id })),
+          connect: userIds.map((user) => ({ id: user.id })),
         },
       },
     });
@@ -51,5 +53,14 @@ export default class PaymentService {
 
   public async deletePayment(paymentId: string) {
     return this.prisma.payment.delete({ where: { id: paymentId } });
+  }
+
+  public async acceptPayment(userId: string, paymentId: string) {
+    await this.prisma.payment.update({
+      where: { id: paymentId, unacceptedUsers: { some: { id: userId } } },
+      data: {
+        unacceptedUsers: { disconnect: { id: userId } },
+      },
+    });
   }
 }

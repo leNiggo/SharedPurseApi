@@ -55,4 +55,14 @@ export default class GroupService {
       where: { id: groupId, createdByUsedId: userId },
     });
   }
+
+  public async acceptInvitation(userId: string, groupId: string) {
+    await this.prisma.group.update({
+      where: { id: groupId, invitedUsers: { some: { id: userId } } },
+      data: {
+        invitedUsers: { disconnect: { id: userId } },
+        users: { connect: [{ id: userId }] },
+      },
+    });
+  }
 }

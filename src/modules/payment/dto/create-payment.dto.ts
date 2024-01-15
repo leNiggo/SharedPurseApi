@@ -4,6 +4,7 @@ import { IsUUID } from 'class-validator';
 
 export default class CreatePaymentDTO extends OmitType(PaymentDTO, [
   'unacceptedUser',
+  'id',
 ]) {
   @IsUUID()
   groupId: string;

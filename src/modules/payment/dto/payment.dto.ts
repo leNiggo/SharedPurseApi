@@ -19,5 +19,5 @@ export default class PaymentDTO {
   createdAt!: Date;
 
   @IsUUID('4', { each: true })
-  unacceptedUser: string[];
+  unacceptedUser?: string[];
 }

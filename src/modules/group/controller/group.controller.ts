@@ -85,6 +85,15 @@ export default class GroupController {
     await this.groupService.removeUser(context.id, fields.userIds);
   }
 
+  @Patch('accept/:id')
+  @ApiOkResponse()
+  public async acceptInvitation(
+    @Req() req: UserRequest,
+    @Param() context: GroupContext,
+  ) {
+    await this.groupService.acceptInvitation(req.user.userId, context.id);
+  }
+
   @Delete(':id')
   @ApiOkResponse()
   public async deleteGroup(

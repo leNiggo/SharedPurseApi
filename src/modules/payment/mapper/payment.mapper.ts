@@ -23,6 +23,6 @@ export function mapToPaymentDTO(
     createdAt: payment.createdAt,
     location: payment.location,
     name: payment.name,
-    unacceptedUser: payment.unacceptedUsers.map((id) => id.id),
+    unacceptedUser: payment.unacceptedUsers?.map((id) => id.id),
   };
 }
