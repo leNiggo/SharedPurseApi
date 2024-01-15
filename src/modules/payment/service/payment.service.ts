@@ -56,6 +56,15 @@ export default class PaymentService {
   }
 
   public async acceptPayment(userId: string, paymentId: string) {
+    const payment = await this.prisma.payment.findUniqueOrThrow({
+      where: { id: paymentId },
+    });
+
+    // await this.prisma.saldo.upsert({
+    //   where: { userId_groupId: { groupId: payment.groupId, userId } },
+    //   update: {},
+    // });
+
     await this.prisma.payment.update({
       where: { id: paymentId, unacceptedUsers: { some: { id: userId } } },
       data: {

@@ -7,9 +7,18 @@ import AuthModule from './modules/auth/auth.module';
 import GroupModule from './modules/group/group.module';
 import PaymentModule from './modules/payment/payment.module';
 import NotifyModule from './modules/notify/notify.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          options: {},
+        },
+      },
+    }),
     PrismaModule,
     JwtModule.register({
       global: true,

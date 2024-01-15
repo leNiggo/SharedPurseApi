@@ -4,6 +4,7 @@ import { createOpenApi } from './openApi';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { readFileSync } from 'fs';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
 const httpsOptions: HttpsOptions = {
   key: process.env.PRIVATE_KEY_PATH
@@ -21,6 +22,9 @@ async function bootstrap() {
         ? httpsOptions
         : undefined,
   });
+
+  app.useLogger(app.get(Logger));
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
   createOpenApi(app);
 

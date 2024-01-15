@@ -70,4 +70,6 @@ model Saldo {
 
   group   Group  @relation(fields: [groupId], references: [id])
   groupId String @db.Uuid
+
+  @@unique([userId, groupId])
 }
