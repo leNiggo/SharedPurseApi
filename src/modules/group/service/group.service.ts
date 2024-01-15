@@ -60,6 +60,10 @@ export default class GroupService {
   }
 
   public async deleteGroup(userId: string, groupId: string) {
+    // First delete all entries wich relate to group
+
+    await this.prisma.payment.deleteMany({ where: { groupId } });
+
     return this.prisma.group.delete({
       where: { id: groupId, createdByUsedId: userId },
     });

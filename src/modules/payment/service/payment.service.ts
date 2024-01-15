@@ -93,6 +93,33 @@ export default class PaymentService {
       },
     });
 
+    await this.prisma.saldo.upsert({
+      where: {
+        userId_groupId: {
+          groupId: payment.groupId,
+          userId: payment.createdById,
+        },
+      },
+      update: {
+        saldo: {
+          increment: new Decimal(
+            EURO(payment.amount.toNumber()).subtract(
+              EURO(payment.amount.toNumber()).divide(userCount),
+            ).value,
+          ),
+        },
+      },
+      create: {
+        userId: payment.createdById,
+        groupId: payment.groupId,
+        saldo: new Decimal(
+          EURO(payment.amount.toNumber()).subtract(
+            EURO(payment.amount.toNumber()).divide(userCount),
+          ).value,
+        ),
+      },
+    });
+
     await this.prisma.payment.update({
       where: { id: paymentId, unacceptedUsers: { some: { id: userId } } },
       data: {
