@@ -25,6 +25,8 @@ import GroupListDTO from '../dto/list-group.dto';
 import { mapToGroupListDTO } from '../mapper/list-group.mapper';
 import InviteUsersDTO from '../dto/invite-user.dto';
 import GroupContext from '../dto/group.context.dto';
+import GroupSaldoListDTO from '../dto/group-saldo-list.dto';
+import { mapToGroupSaldo } from '../mapper/list-saldo.mapper';
 
 @ApiTags('Groups')
 @Controller('group')
@@ -92,6 +94,20 @@ export default class GroupController {
     @Param() context: GroupContext,
   ) {
     await this.groupService.acceptInvitation(req.user.userId, context.id);
+  }
+
+  @Get('/saldo/:id')
+  @ApiOkResponse({
+    type: GroupSaldoListDTO,
+  })
+  public async getGroupSaldos(
+    @Param() context: GroupContext,
+  ): Promise<GroupSaldoListDTO> {
+    const saldos = await this.groupService.getGroupSaldos(context.id);
+
+    return {
+      saldos: saldos.map(mapToGroupSaldo),
+    };
   }
 
   @Delete(':id')

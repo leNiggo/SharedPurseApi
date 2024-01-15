@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import CreatePaymentDTO from '../dto/create-payment.dto';
 import UpdatePaymentDTO from '../dto/update-payment.dto';
+import { EURO } from 'src/currency/euro';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export default class PaymentService {
@@ -60,10 +62,36 @@ export default class PaymentService {
       where: { id: paymentId },
     });
 
-    // await this.prisma.saldo.upsert({
-    //   where: { userId_groupId: { groupId: payment.groupId, userId } },
-    //   update: {},
-    // });
+    const userCount = await this.prisma.user.count({
+      where: {
+        OR: [
+          { groups: { some: { id: payment.groupId } } },
+          { createdGroups: { some: { id: payment.groupId } } },
+        ],
+      },
+    });
+
+    if (userCount < 1) {
+      return;
+    }
+
+    await this.prisma.saldo.upsert({
+      where: { userId_groupId: { groupId: payment.groupId, userId } },
+      update: {
+        saldo: {
+          decrement: new Decimal(
+            EURO(payment.amount.toNumber()).divide(userCount).value,
+          ),
+        },
+      },
+      create: {
+        userId,
+        groupId: payment.groupId,
+        saldo: new Decimal(
+          EURO(payment.amount.toNumber()).divide(userCount).value,
+        ),
+      },
+    });
 
     await this.prisma.payment.update({
       where: { id: paymentId, unacceptedUsers: { some: { id: userId } } },

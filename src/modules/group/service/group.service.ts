@@ -50,6 +50,15 @@ export default class GroupService {
     });
   }
 
+  public async getGroupSaldos(groupId: string) {
+    const saldos = await this.prisma.saldo.findMany({
+      where: { groupId },
+      include: { user: { select: { name: true } } },
+    });
+
+    return saldos;
+  }
+
   public async deleteGroup(userId: string, groupId: string) {
     return this.prisma.group.delete({
       where: { id: groupId, createdByUsedId: userId },
