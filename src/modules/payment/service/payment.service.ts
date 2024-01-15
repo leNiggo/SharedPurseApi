@@ -12,10 +12,17 @@ export default class PaymentService {
   public async createPayment(userId: string, fields: CreatePaymentDTO) {
     const group = await this.prisma.group.findFirstOrThrow({
       where: { id: fields.groupId },
-      select: { users: true, invitedUsers: true },
+      select: { users: true, invitedUsers: true, createdBy: true },
     });
 
-    const userIds = [...group.users, ...group.invitedUsers];
+    const userIds = [
+      ...group.users.filter((id) => id.id !== userId),
+      ...group.invitedUsers.filter((id) => id.id !== userId),
+    ];
+
+    if (group.createdBy.id !== userId) {
+      userIds.push(group.createdBy);
+    }
 
     return this.prisma.payment.create({
       data: {
@@ -88,7 +95,7 @@ export default class PaymentService {
         userId,
         groupId: payment.groupId,
         saldo: new Decimal(
-          EURO(payment.amount.toNumber()).divide(userCount).value,
+          -EURO(payment.amount.toNumber()).divide(userCount).value,
         ),
       },
     });
@@ -103,9 +110,7 @@ export default class PaymentService {
       update: {
         saldo: {
           increment: new Decimal(
-            EURO(payment.amount.toNumber()).subtract(
-              EURO(payment.amount.toNumber()).divide(userCount),
-            ).value,
+            EURO(payment.amount.toNumber()).divide(userCount).value,
           ),
         },
       },
@@ -113,9 +118,7 @@ export default class PaymentService {
         userId: payment.createdById,
         groupId: payment.groupId,
         saldo: new Decimal(
-          EURO(payment.amount.toNumber()).subtract(
-            EURO(payment.amount.toNumber()).divide(userCount),
-          ).value,
+          EURO(payment.amount.toNumber()).divide(userCount).value,
         ),
       },
     });

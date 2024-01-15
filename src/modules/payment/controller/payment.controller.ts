@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -17,16 +16,16 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import PaymentService from '../service/payment.service';
-import UserRequest from 'src/modules/auth/dto/user-request.dto';
-import CreatePaymentDTO from '../dto/create-payment.dto';
-import { CreatePaymentResponse } from '../dto/create-payment-response.dto';
-import PaymentContext from '../dto/payment-context.dto';
-import PaymentDTO from '../dto/payment.dto';
-import { mapToPaymentDTO } from '../mapper/payment.mapper';
-import UpdatePaymentDTO from '../dto/update-payment.dto';
-import PaymentListDTO from '../dto/payment-list.dto';
 import { JWT_AUTH } from 'src/constants/global';
+import UserRequest from 'src/modules/auth/dto/user-request.dto';
+import { CreatePaymentResponse } from '../dto/create-payment-response.dto';
+import CreatePaymentDTO from '../dto/create-payment.dto';
+import PaymentContext from '../dto/payment-context.dto';
+import PaymentListDTO from '../dto/payment-list.dto';
+import PaymentDTO from '../dto/payment.dto';
+import UpdatePaymentDTO from '../dto/update-payment.dto';
+import { mapToPaymentDTO } from '../mapper/payment.mapper';
+import PaymentService from '../service/payment.service';
 
 @ApiTags('Payment')
 @ApiInternalServerErrorResponse()
@@ -97,11 +96,5 @@ export default class PaymentController {
     @Param() context: PaymentContext,
   ) {
     await this.paymentService.acceptPayment(req.user.userId, context.id);
-  }
-
-  @Delete(':id')
-  @ApiOkResponse()
-  public async deletePayment(@Param() context: PaymentContext) {
-    await this.paymentService.deletePayment(context.id);
   }
 }
