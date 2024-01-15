@@ -6,6 +6,7 @@ import { jwtConstants } from './modules/auth/constants';
 import AuthModule from './modules/auth/auth.module';
 import GroupModule from './modules/group/group.module';
 import PaymentModule from './modules/payment/payment.module';
+import NotifyModule from './modules/notify/notify.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import PaymentModule from './modules/payment/payment.module';
     UserModule,
     PaymentModule,
     GroupModule,
+    NotifyModule,
   ],
   controllers: [],
   providers: [],

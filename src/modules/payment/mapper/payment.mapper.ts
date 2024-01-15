@@ -26,3 +26,21 @@ export function mapToPaymentDTO(
     unacceptedUser: payment.unacceptedUsers?.map((id) => id.id),
   };
 }
+
+export function mapToPaymentWithoutUserDTO(payment: {
+  id: string;
+  name: string;
+  amount: Decimal;
+  createdAt: Date;
+  location: string;
+  createdById: string;
+  groupId: string;
+}) {
+  return {
+    id: payment.id,
+    amount: EURO(payment.amount.toNumber()).format(),
+    createdAt: payment.createdAt,
+    location: payment.location,
+    name: payment.name,
+  };
+}
