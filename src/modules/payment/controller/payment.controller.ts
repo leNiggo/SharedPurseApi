@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -25,10 +26,12 @@ import PaymentDTO from '../dto/payment.dto';
 import { mapToPaymentDTO } from '../mapper/payment.mapper';
 import UpdatePaymentDTO from '../dto/update-payment.dto';
 import PaymentListDTO from '../dto/payment-list.dto';
+import { JWT_AUTH } from 'src/constants/global';
 
 @ApiTags('Payment')
 @ApiInternalServerErrorResponse()
 @ApiBadRequestResponse()
+@ApiBearerAuth(JWT_AUTH)
 @Controller('payment')
 export default class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}

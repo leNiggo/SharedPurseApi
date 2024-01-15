@@ -40,6 +40,13 @@ export default class GroupService {
       where: {
         OR: [{ createdByUsedId: userId }, { users: { some: { id: userId } } }],
       },
+      include: {
+        createdBy: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }
 

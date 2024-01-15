@@ -1,12 +1,18 @@
 import GroupDTO from '../dto/group.dto';
 
-export function mapToGroupListDTO(group: {
-  id: string;
-  name: string;
-  createdByUsedId: string;
-}): GroupDTO {
+export function mapToGroupListDTO(
+  group: {
+    createdBy: {
+      name: string;
+    };
+  } & {
+    id: string;
+    name: string;
+    createdByUsedId: string;
+  },
+): GroupDTO {
   return {
-    createdByUserId: group.createdByUsedId,
+    createdByUser: group.createdBy.name,
     name: group.name,
     id: group.id,
   };

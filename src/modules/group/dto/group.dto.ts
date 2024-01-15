@@ -8,5 +8,5 @@ export default class GroupDTO {
   name: string;
 
   @IsString()
-  createdByUserId: string;
+  createdByUser: string;
 }
