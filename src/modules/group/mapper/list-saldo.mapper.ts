@@ -1,5 +1,6 @@
 import { Decimal } from '@prisma/client/runtime/library';
 import GroupSaldoDTO from '../dto/group-saldo.dto';
+import { EURO } from 'src/currency/euro';
 
 export function mapToGroupSaldo(
   saldo: {
@@ -15,7 +16,7 @@ export function mapToGroupSaldo(
 ): GroupSaldoDTO {
   return {
     id: saldo.id,
-    saldo: saldo.saldo.toString(),
+    saldo: EURO(saldo.saldo.toNumber()).format(),
     userName: saldo.user.name,
   };
 }
