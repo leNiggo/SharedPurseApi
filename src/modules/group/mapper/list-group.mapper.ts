@@ -23,12 +23,13 @@ export function mapToGroupListDTO(
     createdByUser: group.createdBy.name,
     name: group.name,
     id: group.id,
-    userSaldo: group.Saldo.find((saldo) => saldo.userId === saldo.userId).saldo
+    userSaldo: group.Saldo?.find((saldo) => saldo.userId === saldo.userId)
+      ?.saldo
       ? EURO(
           group.Saldo.find(
             (saldo) => saldo.userId === saldo.userId,
           ).saldo.toNumber(),
         ).format()
-      : undefined,
+      : '€0.00',
   };
 }
