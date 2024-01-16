@@ -27,6 +27,7 @@ import InviteUsersDTO from '../dto/invite-user.dto';
 import GroupContext from '../dto/group.context.dto';
 import GroupSaldoListDTO from '../dto/group-saldo-list.dto';
 import { mapToGroupSaldo } from '../mapper/list-saldo.mapper';
+import CreateGroupResponseDTO from '../dto/create-group-response.dto';
 
 @ApiTags('Groups')
 @Controller('group')
@@ -42,17 +43,20 @@ export default class GroupController {
   })
   @ApiCreatedResponse({
     description: 'returns the created id of the group',
+    type: CreateGroupResponseDTO,
   })
   public async createGroup(
     @Req() req: UserRequest,
     @Body() fields: CreateGroupDTO,
-  ): Promise<string> {
+  ): Promise<CreateGroupResponseDTO> {
     const newGroup = await this.groupService.createGroup(
       req.user.userId,
       fields.name,
     );
 
-    return newGroup.id;
+    return {
+      id: newGroup.id,
+    };
   }
 
   @Get()
