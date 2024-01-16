@@ -36,7 +36,9 @@ export default class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @Post()
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({
+    type: CreatePaymentResponse,
+  })
   public async createPayment(
     @Req() req: UserRequest,
     @Body() fields: CreatePaymentDTO,
