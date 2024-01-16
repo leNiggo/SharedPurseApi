@@ -9,4 +9,8 @@ export default class GroupDTO {
 
   @IsString()
   createdByUser: string;
+
+  @IsString()
+  userSaldo: string;
+
 }

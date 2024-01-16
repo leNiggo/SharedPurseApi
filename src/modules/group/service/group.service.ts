@@ -46,6 +46,11 @@ export default class GroupService {
             name: true,
           },
         },
+        Saldo: {
+          where: {
+            userId,
+          },
+        },
       },
     });
   }
